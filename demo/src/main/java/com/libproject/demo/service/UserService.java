@@ -12,6 +12,7 @@ import com.libproject.demo.domain.models.User;
 import com.libproject.demo.repository.UserRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -35,6 +36,10 @@ public class UserService {
 //        }
 //        return user;
 //    }
+
+    public List<User> getAll(){
+        return userRepository.findAll();
+    }    
 
     public User getUserById(long id) {
         return userRepository.findById(id).orElseThrow(() ->
