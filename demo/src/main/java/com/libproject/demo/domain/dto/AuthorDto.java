@@ -15,7 +15,7 @@ public class AuthorDto {
     private long id;
     private String name;
     private String citizenship;
-    private List<BookDto> bookDto;
+    private List<BookDto> books;
 
     public static AuthorDto convert(Author author){
         return new AuthorDto(author.getId(), author.getName(), author.getCitizenship(), author.getBooks().stream().map(book->BookDto.convert(book)).toList());

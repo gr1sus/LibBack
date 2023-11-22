@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.libproject.demo.domain.dto.BookDto;
+import com.libproject.demo.domain.dto.BookDtoAuthor;
 import com.libproject.demo.domain.models.Book;
 import com.libproject.demo.domain.models.Genre;
 import com.libproject.demo.service.BookService;
@@ -30,7 +31,7 @@ public class BookController {
 
 
     @PostMapping("new")
-    public ResponseEntity<?> newBook(@RequestBody BookDto book){
+    public ResponseEntity<?> newBook(@RequestBody BookDtoAuthor book){
         System.out.println("new Book");
         bookService.createBook(book);
         System.out.println("registered new book: " + book.getName());
@@ -38,7 +39,7 @@ public class BookController {
     }
 
     @GetMapping("allBoks")
-    public List<Book> getAll(){
+    public List<BookDto> getAll(){
         return bookService.getAll();
     }
     
@@ -48,17 +49,17 @@ public class BookController {
     }
 
     @GetMapping("byGenre")
-    public List<Book> getBookByGenre(@RequestParam Genre genre){
+    public List<BookDto> getBookByGenre(@RequestParam Genre genre){
         return bookService.getBookByGenre(genre);
     }
 
     @GetMapping("byUrl")
-    public Book getBookByUrl(@PathVariable String url){
+    public BookDto getBookByUrl(@RequestParam String url){
         return bookService.getBookByUrl(url);
     }
 
     @GetMapping("byName")
-    public Book getBookByName(@PathVariable String name){
+    public BookDto getBookByName(@RequestParam String name){
         return bookService.getBookByName(name);
     }
 

@@ -36,7 +36,7 @@ public class AuthorConroller {
     }
 
     @GetMapping("all")
-    public List<Author> getAll(){
+    public List<AuthorDto> getAll(){
         return authorService.getAll();
     }
 

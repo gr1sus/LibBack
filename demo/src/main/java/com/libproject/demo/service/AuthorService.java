@@ -19,8 +19,9 @@ public class AuthorService {
     
     private final AuthorRepository authorRepository;
 
-    public List<Author> getAll(){
-        return authorRepository.findAll();
+    public List<AuthorDto> getAll(){
+        List<AuthorDto> authorDto = authorRepository.findAll().stream().map(author->AuthorDto.convert(author)).toList();
+        return authorDto;
     }
 
     public AuthorDto getAuthorById(long id){

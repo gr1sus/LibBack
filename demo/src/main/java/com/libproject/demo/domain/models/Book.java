@@ -33,6 +33,8 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @Column(name = "genre",nullable = false)
     private Genre genre;
+    
+    
 
     @ManyToOne
     @JoinColumn(name = "author_id")
