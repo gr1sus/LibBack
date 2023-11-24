@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.libproject.demo.domain.dto.AuthorDto;
-import com.libproject.demo.domain.dto.BookDto;
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,11 +32,15 @@ public class Author {
     @Column(name = "citizenship")
     private String citizenship;
 
+    @Column(name = "image_path",nullable = false)
+    private String imagePath;
+
+
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Book> books;   
 
     public static Author convert (AuthorDto authorDto){
         List<Book> books = new ArrayList<Book>();
-        return new Author (authorDto.getId(), authorDto.getName(), authorDto.getCitizenship(),books);
+        return new Author (authorDto.getId(), authorDto.getName(), authorDto.getCitizenship(),authorDto.getImagePath(),books);
     }
 }

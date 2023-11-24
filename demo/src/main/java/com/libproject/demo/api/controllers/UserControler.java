@@ -2,7 +2,9 @@ package com.libproject.demo.api.controllers;
 
 import org.springframework.http.HttpStatus;
 
-import java.security.Principal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
@@ -12,10 +14,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.libproject.demo.domain.dto.LoginDto;
 import com.libproject.demo.domain.dto.UserDto;
+import com.libproject.demo.domain.models.Role;
 import com.libproject.demo.domain.models.User;
 import com.libproject.demo.service.SecurityService;
 import com.libproject.demo.service.UserService;
@@ -25,10 +30,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -37,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserControler {
     private final UserService userService;
     private final SecurityService securityService;
+    private static final String UPLOAD_DIR_IMAGE = "demo/public/imageUser/";
+
 
     @PostMapping("login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginDto dto, BindingResult bindingResult) {
@@ -52,13 +59,31 @@ public class UserControler {
     }
 
     @PostMapping("new")
-    public ResponseEntity<?> newUser(@RequestBody UserDto user) {
+    public ResponseEntity<?> newUser(@RequestParam("name") String firstName,
+                                    @RequestParam("name") String lastName,
+                                    @RequestParam("name") String email,
+                                    @RequestParam("name") String password,
+                                    @RequestParam("imageFile") MultipartFile imageFile, 
+                                    @RequestParam("role") Role role){
         System.out.println("new User");
-        userService.createUser(user);
-        System.out.println("registered new user: " + user.getFirstName() + " " + user.getLastName());
-        securityService.login(user.getEmail(), user.getPassword());
-        System.out.println("logged in new user: " + user.getFirstName() + " " + user.getLastName());
+        userService.createUser(firstName, lastName, email, password, imageFile, role);
+        System.out.println("registered new user: " + firstName + " " + lastName);
+        securityService.login(email, password);
+        System.out.println("logged in new user: " + firstName + " " + lastName);
         // securityService.login(user.getEmail(), user.getPassword());
+
+         if (imageFile.isEmpty()) {
+            System.out.println("no file");
+        }
+        try{
+            String fileName = imageFile.getOriginalFilename();
+            Path filePath = Path.of(UPLOAD_DIR_IMAGE + fileName);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 

@@ -2,21 +2,24 @@ package com.libproject.demo.service;
 
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.dao.DataIntegrityViolationException;
+
+
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.libproject.demo.domain.dto.UserDto;
+
+import com.libproject.demo.domain.models.Role;
 import com.libproject.demo.domain.models.User;
 import com.libproject.demo.repository.UserRepository;
 
-import java.time.LocalDate;
+
+
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
-import org.springframework.context.MessageSource;
+
+
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -26,7 +29,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final String IMAGE_USER_PATH = "imageUser/";
 
 
 //    public User findByName(String username) throws UsernameNotFoundException {
@@ -54,13 +57,14 @@ public class UserService {
         return user.get();
     }
 
-    public User createUser(UserDto userDTO) {
+    public User createUser(String firstName, String lastName, String email, String password, MultipartFile imageUserPath, Role role ) {
         User user = User.builder()
-                .firstName(userDTO.getFirstName())
-                .lastName(userDTO.getLastName())
-                .email(userDTO.getEmail())
-                .password(passwordEncoder.encode(userDTO.getPassword()))
-                .role(userDTO.getRole())
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .imagePath(IMAGE_USER_PATH+imageUserPath.getOriginalFilename())
+                .role(role)
                 .build();
         return userRepository.save(user);
     }

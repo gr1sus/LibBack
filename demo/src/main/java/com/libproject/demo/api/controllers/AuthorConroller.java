@@ -1,5 +1,8 @@
 package com.libproject.demo.api.controllers;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
@@ -9,10 +12,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.libproject.demo.domain.dto.AuthorDto;
 
@@ -25,13 +28,33 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("api/author/")
 @RequiredArgsConstructor
 public class AuthorConroller {
+
+
     private final AuthorService authorService;
+    private static final String UPLOAD_DIR_IMAGE = "demo/public/imageAuthor/";
+
+
 
     @PostMapping("new")
-    public ResponseEntity<?> newAuthor(@RequestBody AuthorDto author){
+    public ResponseEntity<?> newAuthor(@RequestParam("name") String name,
+                                       @RequestParam("citizenship") String citizenship,
+                                       @RequestParam("imageFile") MultipartFile imageFile){
         System.out.println("new Author");
-        authorService.createAuthor(author);
-        System.out.println("registered new author: " + author.getName());
+        authorService.createAuthor(name,citizenship, imageFile);
+        System.out.println("registered new author: " + name);
+
+         if (imageFile.isEmpty()) {
+            System.out.println("no file");
+        }
+        try{
+            String fileName = imageFile.getOriginalFilename();
+            Path filePath = Path.of(UPLOAD_DIR_IMAGE + fileName);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 

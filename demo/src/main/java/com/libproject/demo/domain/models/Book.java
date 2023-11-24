@@ -24,8 +24,12 @@ public class Book {
     @Column(name = "name",nullable = false)
     private String name;
 
-    @Column(name = "book_url",nullable = false)
-    private String bookUrl;
+    
+    @Column(name = "book_path",nullable = false)
+    private String bookPath;
+
+    @Column(name = "image_path",nullable = false)
+    private String imagePath;
 
     @Column(name = "description")
     private String description;
@@ -34,8 +38,6 @@ public class Book {
     @Column(name = "genre",nullable = false)
     private Genre genre;
     
-    
-
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;

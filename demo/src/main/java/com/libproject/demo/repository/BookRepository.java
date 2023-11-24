@@ -13,9 +13,10 @@ public interface BookRepository extends JpaRepository<Book,Long>{
 
     Book findByName(String name);
 
-    Book findByBookUrl(String book_url);
 
     List<Book> findByGenre(Genre genre);
+
+ 
     
 
 

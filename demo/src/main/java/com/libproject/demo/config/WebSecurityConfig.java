@@ -48,7 +48,7 @@ public class WebSecurityConfig {
                 .cors(withDefaults())
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("api/user/login").permitAll()
+                        .requestMatchers("api/**").permitAll()
                         // .requestMatchers(
                         //         "api/v1/users/get",
                         //         "api/v1/users/register",

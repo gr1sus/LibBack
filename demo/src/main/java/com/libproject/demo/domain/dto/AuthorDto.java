@@ -1,5 +1,6 @@
 package com.libproject.demo.domain.dto;
 
+
 import java.util.List;
 
 import com.libproject.demo.domain.models.Author;
@@ -15,9 +16,12 @@ public class AuthorDto {
     private long id;
     private String name;
     private String citizenship;
+    private String imagePath;
     private List<BookDto> books;
+    
 
     public static AuthorDto convert(Author author){
-        return new AuthorDto(author.getId(), author.getName(), author.getCitizenship(), author.getBooks().stream().map(book->BookDto.convert(book)).toList());
+        return new AuthorDto(author.getId(), author.getName(), author.getCitizenship(),author.getImagePath(),author.getBooks().stream().map(book->BookDto.convert(book)).toList());
     }
+    
 }

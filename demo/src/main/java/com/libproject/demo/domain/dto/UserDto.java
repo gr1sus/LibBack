@@ -16,9 +16,10 @@ public class UserDto {
     private String lastName;
     private String email;
     private String password;
+    private String imagePath;
     private Role role;
-
+    
     public static UserDto convert(User user) {
-        return new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getRole());
+        return new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getImagePath(), user.getRole());
     }
 }

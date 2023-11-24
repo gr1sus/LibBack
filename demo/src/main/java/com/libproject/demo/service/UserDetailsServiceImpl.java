@@ -3,7 +3,7 @@ package com.libproject.demo.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.libproject.demo.domain.models.Role;
+
 import com.libproject.demo.domain.models.User;
 import com.libproject.demo.repository.UserRepository;
 

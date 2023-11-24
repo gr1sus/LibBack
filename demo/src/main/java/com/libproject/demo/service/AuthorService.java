@@ -5,6 +5,7 @@ package com.libproject.demo.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.libproject.demo.domain.dto.AuthorDto;
 import com.libproject.demo.domain.models.Author;
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
+
+    private final String IMAGE_PATH = "imageAuthor/";
     
     private final AuthorRepository authorRepository;
 
@@ -30,12 +33,10 @@ public class AuthorService {
         return authorDto;
     }
     
-    public Author createAuthor(AuthorDto authorDto){
-        Author author = Author.builder()
-            .name(authorDto.getName())
-            .citizenship(authorDto.getCitizenship())
-            .build();
+    public Author createAuthor(String name,String citizenship,MultipartFile imageAuthorPath){
+        Author author = Author.builder().name(name).citizenship(citizenship).imagePath(IMAGE_PATH + imageAuthorPath.getOriginalFilename()).build();
         return authorRepository.save(author);
+        
     }
     
     public List<Author> getAuthorByCitizenship(String citizenship){
