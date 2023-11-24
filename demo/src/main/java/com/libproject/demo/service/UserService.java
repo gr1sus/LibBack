@@ -29,7 +29,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final String IMAGE_USER_PATH = "imageUser/";
+    private final String IMAGE_USER_PATH = "image/";
 
 
 //    public User findByName(String username) throws UsernameNotFoundException {

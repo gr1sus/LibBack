@@ -28,7 +28,7 @@ public class BookService {
     private final BookRepository bookRepository;
     
     private final String BOOKS_PATH = "books/";
-    private final String IMAGE_BOOKS_PATH = "imageBooks/";
+    private final String IMAGE_BOOKS_PATH = "image/";
     public List<BookDto> getAll(){
         List<BookDto> bookDto = bookRepository.findAll().stream().map(book->BookDto.convert(book)).toList();
         return bookDto;

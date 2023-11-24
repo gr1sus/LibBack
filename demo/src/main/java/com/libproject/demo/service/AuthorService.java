@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthorService {
 
-    private final String IMAGE_PATH = "imageAuthor/";
+    private final String IMAGE_PATH = "image/";
     
     private final AuthorRepository authorRepository;
 

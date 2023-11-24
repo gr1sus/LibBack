@@ -31,7 +31,7 @@ public class AuthorConroller {
 
 
     private final AuthorService authorService;
-    private static final String UPLOAD_DIR_IMAGE = "demo/public/imageAuthor/";
+    private static final String UPLOAD_DIR_IMAGE = "demo/public/image/";
 
 
 

@@ -35,7 +35,7 @@ public class BookController {
     private final BookService bookService;
 
     private static final String UPLOAD_DIR_BOOKS = "demo/public/books/";
-    private static final String UPLOAD_DIR_IMAGE_BOOKS = "demo/public/imageBooks/";
+    private static final String UPLOAD_DIR_IMAGE_BOOKS = "demo/public/image/";
 
     @PostMapping("new")
     public ResponseEntity<?> newBook(@RequestParam("name") String name,

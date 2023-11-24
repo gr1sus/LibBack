@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class UserControler {
     private final UserService userService;
     private final SecurityService securityService;
-    private static final String UPLOAD_DIR_IMAGE = "demo/public/imageUser/";
+    private static final String UPLOAD_DIR_IMAGE = "demo/public/image/";
 
 
     @PostMapping("login")
@@ -59,10 +59,10 @@ public class UserControler {
     }
 
     @PostMapping("new")
-    public ResponseEntity<?> newUser(@RequestParam("name") String firstName,
-                                    @RequestParam("name") String lastName,
-                                    @RequestParam("name") String email,
-                                    @RequestParam("name") String password,
+    public ResponseEntity<?> newUser(@RequestParam("firstName") String firstName,
+                                    @RequestParam("lastName") String lastName,
+                                    @RequestParam("email") String email,
+                                    @RequestParam("password") String password,
                                     @RequestParam("imageFile") MultipartFile imageFile, 
                                     @RequestParam("role") Role role){
         System.out.println("new User");
