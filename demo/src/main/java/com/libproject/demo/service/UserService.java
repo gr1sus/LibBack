@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import com.libproject.demo.domain.dto.AuthorDto;
+import com.libproject.demo.domain.dto.UserDto;
 import com.libproject.demo.domain.models.Role;
 import com.libproject.demo.domain.models.User;
 import com.libproject.demo.repository.UserRepository;
-
-
+import com.libproject.demo.utils.FileUpoadsUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final BookService bookService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final String IMAGE_USER_PATH = "image/";
@@ -41,6 +42,7 @@ public class UserService {
 //    }
 
     public List<User> getAll(){
+        
         return userRepository.findAll();
     }    
 
@@ -69,10 +71,33 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateUser(long id, String firstName,String lastName,String email,String password,MultipartFile imageUserPath, Role role){
+        User user = userRepository.findById(id).orElseThrow();
+        FileUpoadsUtil.saveFile(imageUserPath, IMAGE_USER_PATH);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        if(email != null && !email.equals("")){
+            user.setEmail(email);
+        }
+        if(password != null && password.length()>0){
+            user.setPassword(passwordEncoder.encode(password));
+        }
+        user.setImagePath(IMAGE_USER_PATH+imageUserPath.getOriginalFilename());
+        user.setRole(role);
+        return userRepository.save(user);
+    }
+
+
     public void deleteUser(long id) {
         User user = getUserById(id);
         //там стоит cascade all, по идее должен удалять все
         userRepository.delete(user);
+    }
+
+    public User addBook(long user_id,long book_id){
+        User user = getUserById(user_id);
+        user.addBook(bookService.getBookById(book_id));
+        return userRepository.save(user);
     }
 
     // public void updateUser(long id, UserDto userDTO) {

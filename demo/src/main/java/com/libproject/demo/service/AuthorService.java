@@ -11,6 +11,7 @@ import com.libproject.demo.domain.dto.AuthorDto;
 import com.libproject.demo.domain.models.Author;
 
 import com.libproject.demo.repository.AuthorRepository;
+import com.libproject.demo.utils.FileUpoadsUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +38,18 @@ public class AuthorService {
         Author author = Author.builder().name(name).citizenship(citizenship).imagePath(IMAGE_PATH + imageAuthorPath.getOriginalFilename()).build();
         return authorRepository.save(author);
         
+    }
+
+    public Author updateAuthor(long id,String name,String citizenship,MultipartFile imageAuthorPath){
+        Author author = authorRepository.findById(id).orElseThrow();
+
+        FileUpoadsUtil.saveFile(imageAuthorPath, IMAGE_PATH);
+
+        author.setName(name);
+        author.setCitizenship(citizenship);
+        author.setImagePath(IMAGE_PATH + imageAuthorPath.getOriginalFilename());
+        
+        return authorRepository.save(author);
     }
     
     public List<Author> getAuthorByCitizenship(String citizenship){

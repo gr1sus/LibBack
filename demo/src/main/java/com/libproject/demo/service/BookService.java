@@ -15,7 +15,7 @@ import com.libproject.demo.domain.models.Book;
 import com.libproject.demo.domain.models.Genre;
 import com.libproject.demo.repository.AuthorRepository;
 import com.libproject.demo.repository.BookRepository;
-
+import com.libproject.demo.utils.FileUpoadsUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,10 +54,36 @@ public class BookService {
     }
 
     public Book createBook(String name, MultipartFile bookFile,MultipartFile imageBookPath, String description, Genre genre, long author_id ) throws IOException{
-        Author author = authorRepository.findById(author_id).orElseThrow();
-        Book book = Book.builder().name(name).bookPath(BOOKS_PATH + bookFile.getOriginalFilename()).imagePath(IMAGE_BOOKS_PATH + imageBookPath.getOriginalFilename()).description(description).genre(genre).author(author).build();
-        return bookRepository.save(book);
+        if(author_id != 0){
+            Author author = authorRepository.findById(author_id).orElseThrow();
+            Book book = Book.builder().name(name).bookPath(BOOKS_PATH + bookFile.getOriginalFilename()).imagePath(IMAGE_BOOKS_PATH + imageBookPath.getOriginalFilename()).description(description).genre(genre).author(author).build();
+             return bookRepository.save(book);
+        }
+        else{
+            Book book = Book.builder().name(name).bookPath(BOOKS_PATH + bookFile.getOriginalFilename()).imagePath(IMAGE_BOOKS_PATH + imageBookPath.getOriginalFilename()).description(description).genre(genre).build();
+             return bookRepository.save(book);
+        }
+       
     } 
+
+    public Book updateBook(long id, String name, MultipartFile bookFile,MultipartFile imageBookPath, String description, Genre genre, long author_id ){
+
+        
+        Author author = authorRepository.findById(author_id).orElseThrow();
+        Book book = getBookById(id);
+
+        FileUpoadsUtil.saveFile(bookFile, BOOKS_PATH);
+        FileUpoadsUtil.saveFile(imageBookPath, IMAGE_BOOKS_PATH);
+
+        book.setName(name);
+        book.setBookPath(BOOKS_PATH + bookFile.getOriginalFilename());
+        book.setImagePath(IMAGE_BOOKS_PATH + imageBookPath.getOriginalFilename());
+        book.setDescription(description);
+        book.setGenre(genre);
+        book.setAuthor(author);
+        return bookRepository.save(book);
+
+    }
     
     public void deleteBook(long id){
         Book book = getBookById(id);

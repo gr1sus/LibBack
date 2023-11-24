@@ -58,6 +58,34 @@ public class AuthorConroller {
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 
+@PostMapping("update")
+    public ResponseEntity<?> updateAuthor(@RequestParam("id") long id,
+                                          @RequestParam("name") String name,
+                                          @RequestParam("citizenship") String citizenship,
+                                          @RequestParam("imageFile") MultipartFile imageFile){
+        System.out.println("new Author");
+        authorService.updateAuthor(id, name,citizenship, imageFile);
+        System.out.println("registered new author: " + name);
+
+         if (imageFile.isEmpty()) {
+            System.out.println("no file");
+        }
+        try{
+            String fileName = imageFile.getOriginalFilename();
+            Path filePath = Path.of(UPLOAD_DIR_IMAGE + fileName);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
+    }
+
+
+
+
+
     @GetMapping("all")
     public List<AuthorDto> getAll(){
         return authorService.getAll();

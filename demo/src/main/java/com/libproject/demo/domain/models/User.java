@@ -1,5 +1,8 @@
 package com.libproject.demo.domain.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,5 +40,21 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = " user_books", 
+        joinColumns = { @JoinColumn(name="user_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "book_id") }
+    )
+    List<Book> books = new ArrayList<>();
+
+    public void addBook(Book book) {
+        if (books == null){
+            books = new ArrayList<>();
+        }
+        books.add(book);
+    }
+
 
 }

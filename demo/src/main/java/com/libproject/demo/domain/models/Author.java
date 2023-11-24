@@ -36,7 +36,7 @@ public class Author {
     private String imagePath;
 
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books;   
 
     public static Author convert (AuthorDto authorDto){

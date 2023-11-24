@@ -74,6 +74,47 @@ public class BookController {
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 
+
+    @PostMapping("update")
+    public ResponseEntity<?> updateBook(@RequestParam("id") long id,
+                                        @RequestParam("name") String name,
+                                        @RequestParam("bookFile") MultipartFile bookFile,
+                                        @RequestParam("imageBookFile") MultipartFile imageBookFile,
+                                        @RequestParam("description") String description,
+                                        @RequestParam("genre") Genre genre,
+                                        @RequestParam("author_id") long author_id) throws IOException  {
+        System.out.println("new Book");
+        bookService.updateBook(id,name,bookFile,imageBookFile,description,genre,author_id);
+        System.out.println("registered new book: " + name);
+        if (bookFile.isEmpty()) {
+            System.out.println("no file");
+        }
+        try{
+            String fileName = bookFile.getOriginalFilename();
+            Path filePath = Path.of(UPLOAD_DIR_BOOKS + fileName);
+            Files.copy(bookFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+
+        if (imageBookFile.isEmpty()) {
+            System.out.println("no file");
+        }
+        try{
+            String fileName = imageBookFile.getOriginalFilename();
+            Path filePath = Path.of(UPLOAD_DIR_IMAGE_BOOKS + fileName);
+            Files.copy(imageBookFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
+    }
+
+
+
     @GetMapping("allBoks")
     public List<BookDto> getAll(){
         return bookService.getAll();
